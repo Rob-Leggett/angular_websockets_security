@@ -1,0 +1,3 @@
+INSERT INTO USER (account_non_expired, account_non_locked, credentials_non_expired, enabled, first_name, last_name, password, email) values (true, true, true, true, 'Example', 'User', '$2a$10$xT/t.6abkjaRpAkNOrt43OD9Cn2aaS3vgxQsnLtEN7mOi6RpACvbm', 'user@example.com');
+INSERT INTO MEMBERSHIP (membership_id, plan) values (1, 'ADMIN');
+INSERT INTO USER_MEMBERSHIP (email, membership_id) values ('user@example.com', 1);
