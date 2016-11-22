@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/retrieve", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public SimpleUserDetail retrieveUser(@AuthenticationPrincipal UserDetails userDetails) {
         UserDetail user = (UserDetail) userDetails;
 

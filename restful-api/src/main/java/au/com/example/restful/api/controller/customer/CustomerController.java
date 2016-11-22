@@ -20,19 +20,19 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/customers/retrieve", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public List<Customer> getCustomers() {
         return customerService.getCustomers();
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public void deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     public void saveCustomer(@RequestBody Customer customer) {
         customerService.updateCustomer(customer);
     }
