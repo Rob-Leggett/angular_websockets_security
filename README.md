@@ -58,7 +58,7 @@ Download Tomcat `8.5.11` and unzip it to your `$TOMCAT_HOME`, possibly your fold
 No need to change anything in the `$TOMCAT_HOME/conf` folder.
 
 Deploy exploded restful-api and websocket-api war files to Tomcat 8 `$TOMCAT_HOME/webapps`,
-and ensure the root context is set to API. 
+and ensure the root context is set to API.
 Start and Stop tomcat by running `startup.sh & shutdown.sh` from `$TOMCAT_HOME/bin/`
 
 The following would be useful UNIX command patter when you are you `angular_websockets_security` folder:
@@ -77,6 +77,10 @@ The following would be useful UNIX command patter when you are you `angular_webs
 
 If you wanna redeploy the server part, terminate client side first by `Ctrl+C` then `cd ..` then restart the loop above.
 
+### see tomcat logs
+
+To see the last 1000 lines of logs of tomcat server (in second terminal TAB as the first one is running client side or mvn):
+`cd $TOMCAT_HOME/logs; tail -n 1000 catalina.out;`
 
 ### the restful api
 
