@@ -6,6 +6,7 @@ angular.module('app.services').service('socketService', ['$rootScope', '$stomp',
         var subscriptions = {};
 
         this.subscribe = function subscribe() {
+            console.log("start subscribing...");
             var authToken = storageService.getSessionItem(storageConstant.AUTH_TOKEN);
             var headers = (authToken) ? {"X-AUTH-TOKEN": authToken} : {};
 
@@ -23,6 +24,7 @@ angular.module('app.services').service('socketService', ['$rootScope', '$stomp',
         };
 
         this.unsubscribe = function unsubscribe() {
+            console.log("unsubscribing....");
             if (subscriptions.notifications) {
                 subscriptions.notifications.unsubscribe();
             }
