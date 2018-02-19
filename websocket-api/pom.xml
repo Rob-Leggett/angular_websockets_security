@@ -27,13 +27,14 @@
 
         <example.security.version>0.0.1-SNAPSHOT</example.security.version>
 
-        <spring.version>4.2.5.RELEASE</spring.version>
-        <spring.security.version>4.1.0.RELEASE</spring.security.version>
-        <hibernate.version>5.2.4.Final</hibernate.version>
-        <hibernate.entity.manager.version>5.1.0.Final</hibernate.entity.manager.version>
+        <spring.version>4.3.6.RELEASE</spring.version>
+        <spring.security.version>4.2.1.RELEASE</spring.security.version>
+        <hibernate.version>5.2.8.Final</hibernate.version>
+        <hibernate.validator.version>5.4.0.Final</hibernate.validator.version>
+        <hibernate.entity.manager.version>5.2.8.Final</hibernate.entity.manager.version>
         <hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
         <jta.version>1.1</jta.version>
-        <c3p0.version>0.9.1.2</c3p0.version>
+        <c3p0.version>0.9.5.2</c3p0.version>
         <slf4j.version>1.7.13</slf4j.version>
         <cglib.version>3.1</cglib.version>
         <commons.collections.version>3.2.1</commons.collections.version>
@@ -350,16 +351,21 @@
             <version>${jta.version}</version>
         </dependency>
         <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-core</artifactId>
+           <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.version}</version>
+            <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator-annotation-processor</artifactId>
-            <version>${hibernate.version}</version>
+            <version>${hibernate.validator.version}</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.entity.manager.version}</version>
@@ -369,7 +375,7 @@
                     <groupId>org.jboss.logging</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
@@ -381,7 +387,7 @@
             <version>${hibernate.entity.manager.version}</version>
         </dependency>
         <dependency>
-            <groupId>c3p0</groupId>
+            <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
             <version>${c3p0.version}</version>
         </dependency>

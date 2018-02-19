@@ -1,3 +1,7 @@
+*.log
+client/node
+client/node_modules
+client/etc
 target/
 pom.xml.tag
 pom.xml.releaseBackup

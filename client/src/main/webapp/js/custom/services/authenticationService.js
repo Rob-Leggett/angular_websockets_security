@@ -8,9 +8,9 @@ angular.module('app.services').service('authenticationService', ['$http', '$q', 
 
         $http.post(propertiesConstant.RESTFUL_API_URL + '/api/authentication/login', null)
             .success(function (data, status, headers, config) {
-
                 storageService.setSessionItem(storageConstant.AUTH_TOKEN, headers('X-AUTH-TOKEN'));
-
+                storageService.setLocalItem(storageConstant.AUTH_TOKEN, headers('X-AUTH-TOKEN'));
+                console.log("X-AUTH-TOKEN="+headers('X-AUTH-TOKEN'));
                 delete $http.defaults.headers.common.Authorization;
 
                 d.resolve();
@@ -25,11 +25,17 @@ angular.module('app.services').service('authenticationService', ['$http', '$q', 
     this.logout = function () {
         var d = $q.defer();
 
-        $http.post(propertiesConstant.RESTFUL_API_URL + '/api/authentication/logout', null)
+        var authToken = storageService.getLocalItem(storageConstant.AUTH_TOKEN);
+
+        var headers = (authToken) ? {"X-AUTH-TOKEN": authToken} : {};
+
+        $http.get(propertiesConstant.RESTFUL_API_URL + '/api/authentication/logout/validate?status=success', headers)
             .success(function () {
 
                 storageService.removeSessionItem(storageConstant.AUTH_TOKEN);
                 storageService.removeSessionItem(storageConstant.USER);
+                storageService.removeLocalItem(storageConstant.AUTH_TOKEN);
+                storageService.removeLocalItem(storageConstant.USER);
 
                 d.resolve();
             })

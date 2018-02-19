@@ -58,13 +58,13 @@ function proxyOptions(expressPort) {
     return [
         {
             proxy: httpProxy.createProxyServer({
-                target: argv['restful-url'] || process.env['GULP_RESTFUL_URL'] || 'http://localhost:8084/'
+                target: argv['restful-url'] || process.env['GULP_RESTFUL_URL'] || 'http://localhost:8080/restful-api/'
             }),
             pattern: "/restful/**"
         },
         {
             proxy: httpProxy.createProxyServer({
-                target: argv['websocket-url'] || process.env['GULP_WEBSOCKET_URL'] || 'http://localhost:8085/'
+                target: argv['websocket-url'] || process.env['GULP_WEBSOCKET_URL'] || 'http://localhost:8080/websocket-api/'
             }),
             pattern: "/websocket/**"
         },

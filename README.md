@@ -52,21 +52,43 @@ You can also run jasmine only tests if you wish via the front end:
 Running
 ====================
 
-### Recommendations:
-
-Use IntelliJ 16+ to run the application.
-
 ### Run the API via Tomcat 8:
 
-Deploy exploded artefact to Tomcat 8 and ensure the root context is set to API.
+Download Tomcat `8.5.11` and unzip it to your `$TOMCAT_HOME`, possibly your folder name would be `apache-tomcat-8.5.11`.
+No need to change anything in the `$TOMCAT_HOME/conf` folder.
 
-### Run the restful api
+Deploy exploded restful-api and websocket-api war files to Tomcat 8 `$TOMCAT_HOME/webapps`,
+and ensure the root context is set to API.
+Start and Stop tomcat by running `startup.sh & shutdown.sh` from `$TOMCAT_HOME/bin/`
 
-The default is expecting the context root to be /restful and running on port 8084
+The following would be useful UNIX command patter when you are you `angular_websockets_security` folder:
 
-### Run the websocket api
+`$TOMCAT_HOME/bin/shutdown.sh;`
 
-The default is expecting the context root to be /websocket and running on port 8085
+`mvn clean install;`
+
+`rm -rf $TOMCAT_HOME/webapps/restful-api* $TOMCAT_HOME/webapps/websocket-api*;`
+
+`cp **/**/*.war $TOMCAT_HOME/webapps;`
+
+`$TOMCAT_HOME/bin/startup.sh;`
+
+`cd client; gulp run;`
+
+If you wanna redeploy the server part, terminate client side first by `Ctrl+C` then `cd ..` then restart the loop above.
+
+### see tomcat logs
+
+To see the last 1000 lines of logs of tomcat server (in second terminal TAB as the first one is running client side or mvn):
+`cd $TOMCAT_HOME/logs; tail -n 1000 catalina.out;`
+
+### the restful api
+
+The default is expecting the context root to be http://localhost:8080/restful-api/
+
+### the websocket api
+
+The default is expecting the context root to be http://localhost:8080/websocket-api/
 
 ### Run the CLIENT via gulp.babel.js:
 
