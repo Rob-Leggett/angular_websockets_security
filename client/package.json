@@ -44,7 +44,7 @@
     "angular-sanitize": "~1.4.4",
     "bootstrap-sass": "~3.3.5",
     "font-awesome": "~4.4.0",
-    "ng-stomp": "0.0.2",  
+    "ng-stomp": "0.2.0",  
     "sockjs-client": "1.0.3",
     "stompjs": "2.3.3"
   }
