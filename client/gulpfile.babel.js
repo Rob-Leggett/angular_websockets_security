@@ -136,7 +136,7 @@ function appJs() {
         require.resolve('angular-sanitize/angular-sanitize.js'),
         require.resolve('bootstrap-sass/assets/javascripts/bootstrap.js'),
         require.resolve('stompjs/lib/stomp.js'),
-        require.resolve('ng-stomp/ng-stomp.js'),
+        require.resolve('ng-stomp/src/ng-stomp.js'),
         'src/main/webapp/js/socksjs/socksjs.js',
         'src/main/webapp/js/angular-xeditable/*.js',
         'src/main/webapp/js/custom/*.js',
