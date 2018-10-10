@@ -181,7 +181,7 @@ function testJs() {
         require.resolve('angular-aria/angular-aria.js'),
         require.resolve('angular-mocks/angular-mocks.js'),
         require.resolve('stompjs/lib/stomp.js'),
-        require.resolve('ng-stomp/ng-stomp.js'),
+        require.resolve('ng-stomp/src/ng-stomp.js'),
         'src/main/webapp/js/socksjs/socksjs.js',
         'src/main/webapp/js/custom/*.js',
         'src/main/webapp/js/custom/**/*.js',
