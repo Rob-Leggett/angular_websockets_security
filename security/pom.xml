@@ -29,7 +29,7 @@
         <hibernate.entity.manager.version>5.1.0.Final</hibernate.entity.manager.version>
         <jta.version>1.1</jta.version>
         <slf4j.version>1.7.13</slf4j.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
 
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
