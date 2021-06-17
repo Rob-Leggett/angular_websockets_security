@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jdk.version>1.8</jdk.version>
+        <jdk.version>16</jdk.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -22,7 +22,7 @@
 
         <phantomjs.maven.plugin.version>0.7</phantomjs.maven.plugin.version>
         <phantomjs.configuration.version>2.1.1</phantomjs.configuration.version>
-        <jasmine.maven.plugin.version>2.0</jasmine.maven.plugin.version>
+        <jasmine.maven.plugin.version>2.2</jasmine.maven.plugin.version>
         <frontend.maven.plugin>1.3</frontend.maven.plugin>
     </properties>
 

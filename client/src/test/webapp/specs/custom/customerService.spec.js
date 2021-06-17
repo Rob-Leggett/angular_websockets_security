@@ -34,6 +34,8 @@ describe('CustomerService Tests', function (){
                 {"id": 4, "firstName": "Sam", "lastName": "Sully"}
             ];
 
+            console.log($httpBackend);
+
             $httpBackend.whenGET(propertiesConstant.RESTFUL_API_URL + '/api/customer').respond(customers);
 
             // check result returned from service call
