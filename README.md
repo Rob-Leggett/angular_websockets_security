@@ -1,96 +1,195 @@
-angular_websockets_security
-===========================
+# Angular WebSocket Security (Modernized)
 
-[![Build Status](https://travis-ci.org/Rob-Leggett/angular_websockets_security.svg?branch=master)](https://travis-ci.org/Rob-Leggett/angular_websockets_security)
+[![CI](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml)
 
-Angular JS with Bootstrap, Web Sockets, Spring 4, and Spring Security
+A modern full-stack application demonstrating **secure WebSocket communication** with **token-based authentication** using Spring Boot 3.4 and Angular 19.
 
-This example is an angular js single page application (SPA) with bootstrap for the widgets and styling.
+## 🔐 Security Features
 
-The application has been broken into four modules RESTFUL-API, WEBSOCKET-API, SECURITY and CLIENT, all are built separately and all are deployed separately.
+This application implements a complete token-based security model for both REST API and WebSocket connections:
 
-The RESTFUL-API and WEBSOCKET-API can run on any web server, but it has been tested against Tomcat 8, the server required http DELETE and PUT, so ensure your web server can support those http methods.
+### REST API Security
+- **JWT Token Authentication** - Stateless, token-based auth
+- **X-AUTH-TOKEN Header** - Custom header for token transport
+- **BCrypt Password Encoding** - Secure password storage
+- **CORS Configuration** - Controlled cross-origin access
 
-The CLIENT currently is run via gulp, for a production release you could extract the .zip artefact and run the static client via Apache.
+### WebSocket Security (CRITICAL)
+- **Token Validation on CONNECT** - `WebSocketTokenInterceptor` validates JWT tokens passed in STOMP headers
+- **Message-Level Security** - CONNECT, MESSAGE, SUBSCRIBE require authentication
+- **SecurityContext Integration** - Authenticated user available in WebSocket handlers
+- **User-Specific Subscriptions** - Secure per-user notification channels
 
-Ensure that you proxy the RESTFUL-API and WEBSOCKET-API so that you have the same domain otherwise you will experience CORS related issues. (deployed artefacts only)
+## 🏗️ Architecture
 
-### Gulp:
-Used as the build tool for the client, this has been written using ES6
+```
+┌─────────────────┐     HTTP + WebSocket      ┌─────────────────────┐
+│                 │  ─────────────────────>   │                     │
+│  Angular 19     │     X-AUTH-TOKEN          │  Spring Boot 3.4    │
+│  Frontend       │  <─────────────────────   │  Backend            │
+│                 │                           │                     │
+└─────────────────┘                           └─────────────────────┘
+        │                                              │
+        │  STOMP over SockJS                          │
+        │  X-AUTH-TOKEN in headers                    │
+        └──────────────────────────────────────────────┘
+```
 
-### Spring 4:
-Used to create RESTful controller interfaces which in turn gets called through ajax requests.
+## 📦 Technology Stack
 
-### Spring Security 4:
-Used for a stateless api that allows authentication via basic authentication or token authentication.
+| Component | Version |
+|-----------|---------|
+| Java | 21 LTS |
+| Spring Boot | 3.4.1 |
+| Spring Security | 6.4.x |
+| Angular | 19.x |
+| Node.js | 20+ LTS |
+| JWT (jjwt) | 0.12.6 |
+| H2 Database | In-memory |
 
-Upon authentication a token is attached to the header response which can in turn be used for sequential requests to be authenticated against.
+## 🚀 Quick Start
 
-When an authentication fails a 401 will always be returned.
+### Prerequisites
+- Java 21+
+- Node.js 20+
+- Maven 3.9+
 
-### Login Details as per database inject.sql:
-**Username =** user@example.com
+### Run the Backend
 
-**Password =** password
+```bash
+cd backend
+mvn spring-boot:run
+```
 
-Testing
-====================
-Simply run on the parent pom to have node and modules auto install and execute all tests. **(REQUIRED FOR FIRST RUN)**
+The backend will start on `http://localhost:8080`
 
-Ensure you have Maven 3.2.0+
+### Run the Frontend
 
-**mvn clean install**
+```bash
+cd frontend
+npm install
+npm start
+```
 
-To run specific profiles please run mvn clean install and simple pass the profile you wish to execute.
+The frontend will start on `http://localhost:4200` with proxy to backend.
 
-This will execute Java and Jasmine tests that will test both java classes and angular js files.
+### Default Login Credentials
 
-You can also run jasmine only tests if you wish via the front end:
+- **Email:** `user@example.com`
+- **Password:** `password`
 
-**http://localhost:4444/test**
+## 🔒 Security Implementation Details
 
-Running
-====================
+### Authentication Flow
 
-### Recommendations:
+1. Client sends `POST /api/authentication/login` with `Authorization: Basic <base64>` header
+2. Server validates credentials against database (BCrypt)
+3. Server generates JWT token signed with HMAC-SHA256
+4. Server returns token in `X-AUTH-TOKEN` response header
+5. Client stores token in sessionStorage
+6. All subsequent requests include `X-AUTH-TOKEN` header
 
-Use IntelliJ 16+ to run the application.
+### WebSocket Authentication Flow
 
-### Run the API via Tomcat 8:
+1. Client connects to `/stomp` endpoint via SockJS
+2. STOMP CONNECT frame includes `X-AUTH-TOKEN` in headers
+3. `WebSocketTokenInterceptor` extracts and validates token
+4. If valid, sets `Authentication` in `SecurityContext`
+5. Subscription requests are authorized against configured rules
+6. Only authenticated users can subscribe to `/user/notifications`
 
-Deploy exploded artefact to Tomcat 8 and ensure the root context is set to API.
+### Key Security Classes
 
-### Run the restful api
+| Class | Purpose |
+|-------|---------|
+| `JwtTokenProvider` | Creates and validates JWT tokens |
+| `JwtAuthenticationFilter` | Validates tokens on HTTP requests |
+| `WebSocketTokenInterceptor` | Validates tokens on WebSocket CONNECT |
+| `WebSocketSecurityConfig` | Configures message-level security rules |
+| `SecurityConfig` | Main Spring Security configuration |
 
-The default is expecting the context root to be /restful and running on port 8084
+## 📁 Project Structure
 
-### Run the websocket api
+```
+├── backend/                     # Spring Boot application
+│   ├── src/main/java/au/com/example/
+│   │   ├── config/             # Configuration classes
+│   │   ├── controller/         # REST and WebSocket controllers
+│   │   ├── model/              # JPA entities
+│   │   ├── repository/         # Spring Data repositories
+│   │   └── security/           # Security components
+│   └── src/main/resources/
+│       ├── application.yml     # Application configuration
+│       └── data.sql            # Initial data
+│
+├── frontend/                    # Angular application
+│   └── src/app/
+│       ├── core/
+│       │   ├── auth/           # Authentication service & guard
+│       │   ├── interceptors/   # HTTP interceptor
+│       │   └── websocket/      # WebSocket service
+│       └── features/           # Feature components
+│
+└── (legacy modules)            # Original AngularJS code (deprecated)
+```
 
-The default is expecting the context root to be /websocket and running on port 8085
+## 🧪 Testing
 
-### Run the CLIENT via gulp.babel.js:
+### Backend Tests
 
-Where PATH is the directory to your checked out project.
+```bash
+cd backend
+mvn test
+```
 
-**Gulp File:** PATH\angular_websockets_security\client\gulpfile.babel.js
+### Frontend Build
 
-**Tasks:** run
+```bash
+cd frontend
+npm run build
+```
 
-**Node Interpreter:** PATH\angular_websockets_security\client\node\node.exe
+## 📖 API Endpoints
 
-**Gulp package:** PATH\angular_websockets_security\client\node_modules\gulp
+### Authentication
+- `POST /api/authentication/login` - Login with Basic Auth
+- `POST /api/authentication/logout` - Logout
 
-### The application is set to run on
+### User
+- `GET /api/user` - Get current user details
 
-**http://localhost:4444**
+### Customers (Protected)
+- `GET /api/customers` - List all customers
+- `GET /api/customers/search?query=` - Search customers
+- `POST /api/customers` - Create customer
+- `PUT /api/customers/{id}` - Update customer
+- `DELETE /api/customers/{id}` - Delete customer
 
-Donations
-====================
+### WebSocket
+- `CONNECT /stomp` - WebSocket endpoint (SockJS)
+- `SUBSCRIBE /user/notifications` - User notifications (requires auth)
 
-### How you can help?
+## 🔄 Migration from Original
 
-Any donations received will be able to assist me provide more blog entries and examples via GitHub, any contributions provided is greatly appreciated.
+This is a complete rewrite of the original AngularJS + Spring 4 application:
 
-Thanks for your support.
+| Original | Modernized |
+|----------|-----------|
+| AngularJS 1.4 | Angular 19 |
+| Spring 4 + Spring Security 4 | Spring Boot 3.4 + Spring Security 6 |
+| Gulp 3 | Angular CLI |
+| Custom HMAC tokens | JWT (jjwt) |
+| WAR deployment | Embedded Tomcat JAR |
+| javax.* APIs | jakarta.* APIs |
 
-[![paypal](https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=EV2ZLZBABFJ34&lc=AU&item_name=Research%20%26%20Development&currency_code=AUD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+### Security Preserved
+- ✅ Token-based stateless authentication
+- ✅ X-AUTH-TOKEN header convention
+- ✅ WebSocket token validation on CONNECT
+- ✅ Message-level security for STOMP
+- ✅ Per-user notification subscriptions
+
+## 📝 License
+
+MIT License
