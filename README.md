@@ -52,7 +52,7 @@ This application implements a complete token-based security model for both REST 
 
 ### Prerequisites
 - Java 21+
-- Node.js 20+
+- Node.js 24+
 - Maven 3.9+
 
 ### Run the Backend
