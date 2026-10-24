@@ -3,7 +3,7 @@
 [![CI](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml)
 
-A modern full-stack application demonstrating **secure WebSocket communication** with **token-based authentication** using Spring Boot 3.4 and Angular 22.
+A modern full-stack application demonstrating **secure WebSocket communication** with **token-based authentication** using Spring Boot 4.1 and Angular 22.
 
 ## 🔐 Security Features
 
@@ -26,12 +26,12 @@ This application implements a complete token-based security model for both REST 
 ```
 ┌─────────────────┐     HTTP + WebSocket      ┌─────────────────────┐
 │                 │  ─────────────────────>   │                     │
-│  Angular 22     │     X-AUTH-TOKEN          │  Spring Boot 3.4    │
+│  Angular 22     │     X-AUTH-TOKEN          │  Spring Boot 4.1    │
 │  Frontend       │  <─────────────────────   │  Backend            │
 │                 │                           │                     │
 └─────────────────┘                           └─────────────────────┘
         │                                              │
-        │  STOMP over SockJS                          │
+        │  STOMP over WebSocket                       │
         │  X-AUTH-TOKEN in headers                    │
         └──────────────────────────────────────────────┘
 ```
@@ -40,19 +40,19 @@ This application implements a complete token-based security model for both REST 
 
 | Component | Version |
 |-----------|---------|
-| Java | 21 LTS |
-| Spring Boot | 3.4.1 |
-| Spring Security | 6.4.x |
-| Angular | 19.x |
-| Node.js | 20+ LTS |
-| JWT (jjwt) | 0.12.6 |
+| Java | 25 LTS |
+| Spring Boot | 4.1.2 |
+| Spring Security | 7.1.x |
+| Angular | 22.x |
+| Node.js | 26+ |
+| JWT (jjwt) | 0.13.0 |
 | H2 Database | In-memory |
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Java 21+
-- Node.js 24+
+- Java 25+
+- Node.js 26+ (`nvm use` reads `frontend/.nvmrc`)
 - Maven 3.9+
 
 ### Run the Backend
@@ -68,7 +68,7 @@ The backend will start on `http://localhost:8080`
 
 ```bash
 cd frontend
-npm install
+npm ci
 npm start
 ```
 
@@ -92,7 +92,7 @@ The frontend will start on `http://localhost:4200` with proxy to backend.
 
 ### WebSocket Authentication Flow
 
-1. Client connects to `/stomp` endpoint via SockJS
+1. Client connects to `/stomp` endpoint as a native WebSocket (STOMP via `@stomp/rx-stomp`)
 2. STOMP CONNECT frame includes `X-AUTH-TOKEN` in headers
 3. `WebSocketTokenInterceptor` extracts and validates token
 4. If valid, sets `Authentication` in `SecurityContext`
@@ -140,15 +140,23 @@ The frontend will start on `http://localhost:4200` with proxy to backend.
 
 ```bash
 cd backend
-mvn test
+mvn verify   # unit + integration tests, incl. an end-to-end STOMP/WebSocket security test
 ```
 
-### Frontend Build
+### Frontend Build & Tests
 
 ```bash
 cd frontend
 npm run build
+npm run test:ci   # Vitest (jsdom)
 ```
+
+### CI
+
+GitHub Actions (`.github/workflows/`):
+- `ci.yml` – single job on JDK 25 + Node 26: `mvn verify`, `npm ci`, build and tests
+- `security.yml` – CodeQL (Java + TypeScript) and `npm audit`, on push/PR to `master` and weekly
+- `release.yml` – builds and attaches the backend JAR and frontend bundle on `v*` tags
 
 ## 📖 API Endpoints
 
@@ -167,7 +175,7 @@ npm run build
 - `DELETE /api/customers/{id}` - Delete customer
 
 ### WebSocket
-- `CONNECT /stomp` - WebSocket endpoint (SockJS)
+- `CONNECT /stomp` - native WebSocket endpoint (STOMP; token passed in the CONNECT `X-AUTH-TOKEN` header)
 - `SUBSCRIBE /user/notifications` - User notifications (requires auth)
 
 ## 🔄 Migration from Original
@@ -177,7 +185,7 @@ This is a complete rewrite of the original AngularJS + Spring 4 application:
 | Original | Modernized |
 |----------|-----------|
 | AngularJS 1.4 | Angular 22 |
-| Spring 4 + Spring Security 4 | Spring Boot 3.4 + Spring Security 6 |
+| Spring 4 + Spring Security 4 | Spring Boot 4.1 + Spring Security 7 |
 | Gulp 3 | Angular CLI |
 | Custom HMAC tokens | JWT (jjwt) |
 | WAR deployment | Embedded Tomcat JAR |

@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
     <version>2.0.0-SNAPSHOT</version>
     <name>Angular WebSocket Security</name>
-    <description>Secure WebSocket communication with JWT authentication - Spring Boot 3.4 + Angular 19</description>
+    <description>Secure WebSocket communication with JWT authentication - Spring Boot 4.1 + Angular 22</description>
 
     <modules>
         <module>backend</module>

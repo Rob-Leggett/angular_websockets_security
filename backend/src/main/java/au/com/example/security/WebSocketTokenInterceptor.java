@@ -9,7 +9,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ import org.springframework.util.StringUtils;
  * 
  * 1. Token is extracted from native headers on CONNECT
  * 2. Token is validated using JWT
- * 3. SecurityContext is set for the WebSocket session
+ * 3. The authenticated user is attached to the WebSocket session
  * 4. Authenticated principal is available for message handling
  * 
  * This preserves the exact security model from the original application.
@@ -64,11 +63,9 @@ public class WebSocketTokenInterceptor implements ChannelInterceptor {
                                     null,
                                     userDetails.getAuthorities());
 
-                    // Set the user for this WebSocket session
+                    // Set the user for this WebSocket session; SecurityContextChannelInterceptor
+                    // propagates it into the SecurityContext for authorization of this and later frames
                     accessor.setUser(authentication);
-                    
-                    // Also set in SecurityContext for immediate use
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
                     logger.debug("WebSocket authenticated user: {}", username);
                 } else {

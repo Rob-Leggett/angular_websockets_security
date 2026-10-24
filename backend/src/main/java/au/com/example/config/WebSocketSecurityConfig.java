@@ -1,45 +1,37 @@
 package au.com.example.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
-import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.simp.SimpMessageType;
+import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager;
 
 /**
- * WebSocket Security Configuration - Modern replacement for WebSocketSecurityConfig.
- * 
+ * WebSocket Security Configuration.
+ *
  * CRITICAL SECURITY COMPONENT
- * 
- * Configures message-level security for STOMP:
+ *
+ * Defines message-level authorization rules for STOMP:
  * - CONNECT, MESSAGE, SUBSCRIBE require authentication
  * - DISCONNECT, UNSUBSCRIBE are permitted
  * - All other messages are denied
- * 
- * This preserves the exact security rules from the original application.
+ *
+ * The rules are enforced by an AuthorizationChannelInterceptor registered in {@link WebSocketConfig}
+ * (after the token interceptor). {@code @EnableWebSocketSecurity} is deliberately not used because it
+ * always enforces a CSRF token on CONNECT, which does not apply to header-token authentication.
  */
 @Configuration
-public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+public class WebSocketSecurityConfig {
 
-    @Override
-    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-        messages
-            // Require authentication for connecting and messaging
-            .simpTypeMatchers(
-                org.springframework.messaging.simp.SimpMessageType.CONNECT,
-                org.springframework.messaging.simp.SimpMessageType.MESSAGE,
-                org.springframework.messaging.simp.SimpMessageType.SUBSCRIBE
-            ).authenticated()
-            // Allow disconnect without auth
-            .simpTypeMatchers(
-                org.springframework.messaging.simp.SimpMessageType.UNSUBSCRIBE,
-                org.springframework.messaging.simp.SimpMessageType.DISCONNECT
-            ).permitAll()
-            // Deny everything else
-            .anyMessage().denyAll();
-    }
-
-    @Override
-    protected boolean sameOriginDisabled() {
-        // Disable CSRF for WebSocket since we use token-based auth
-        return true;
+    @Bean
+    public AuthorizationManager<Message<?>> messageAuthorizationManager() {
+        return MessageMatcherDelegatingAuthorizationManager.builder()
+                .simpTypeMatchers(SimpMessageType.CONNECT, SimpMessageType.MESSAGE, SimpMessageType.SUBSCRIBE)
+                .authenticated()
+                .simpTypeMatchers(SimpMessageType.UNSUBSCRIBE, SimpMessageType.DISCONNECT)
+                .permitAll()
+                .anyMessage().denyAll()
+                .build();
     }
 }
