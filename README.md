@@ -1,7 +1,6 @@
 # Angular WebSocket Security (Modernized)
 
-[![CI](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml)
-[![Security Scan](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml)
+[![CI](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml) [![Security Scan](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml/badge.svg?branch=master)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml) [![License](https://img.shields.io/github/license/Rob-Leggett/angular_websockets_security)](LICENSE) [![Java 25](https://img.shields.io/badge/Java-25-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/) [![Node.js 26](https://img.shields.io/badge/Node.js-26-5FA04E?logo=nodedotjs&logoColor=white)](https://nodejs.org/) [![Spring Boot 4.1](https://img.shields.io/badge/Spring%20Boot-4.1-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot) [![Angular 22.2](https://img.shields.io/badge/Angular-22.2-DD0031?logo=angular&logoColor=white)](https://angular.dev/) [![Bootstrap 5.3](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 
 A modern full-stack application demonstrating **secure WebSocket communication** with **token-based authentication** using Spring Boot 4.1 and Angular 22.
 
