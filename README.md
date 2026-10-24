@@ -3,7 +3,7 @@
 [![CI](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml/badge.svg)](https://github.com/Rob-Leggett/angular_websockets_security/actions/workflows/security.yml)
 
-A modern full-stack application demonstrating **secure WebSocket communication** with **token-based authentication** using Spring Boot 3.4 and Angular 19.
+A modern full-stack application demonstrating **secure WebSocket communication** with **token-based authentication** using Spring Boot 3.4 and Angular 22.
 
 ## 🔐 Security Features
 
@@ -26,7 +26,7 @@ This application implements a complete token-based security model for both REST 
 ```
 ┌─────────────────┐     HTTP + WebSocket      ┌─────────────────────┐
 │                 │  ─────────────────────>   │                     │
-│  Angular 19     │     X-AUTH-TOKEN          │  Spring Boot 3.4    │
+│  Angular 22     │     X-AUTH-TOKEN          │  Spring Boot 3.4    │
 │  Frontend       │  <─────────────────────   │  Backend            │
 │                 │                           │                     │
 └─────────────────┘                           └─────────────────────┘
@@ -176,7 +176,7 @@ This is a complete rewrite of the original AngularJS + Spring 4 application:
 
 | Original | Modernized |
 |----------|-----------|
-| AngularJS 1.4 | Angular 19 |
+| AngularJS 1.4 | Angular 22 |
 | Spring 4 + Spring Security 4 | Spring Boot 3.4 + Spring Security 6 |
 | Gulp 3 | Angular CLI |
 | Custom HMAC tokens | JWT (jjwt) |
